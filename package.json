@@ -1,0 +1,14 @@
+{
+  "name": "@full-stack/app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "practicing full-stack app creation",
+  "workspaces": [
+    "packages/*"
+  ],
+  "author": "Nath Paiva",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}
