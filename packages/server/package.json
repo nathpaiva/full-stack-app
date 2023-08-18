@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts",
+    "lint": "tsc --project tsconfig.json --noEmit && eslint src --ext .ts",
+    "format": "eslint src --ext .ts --fix"
   },
   "author": "Nath Paiva",
   "license": "ISC",
@@ -17,7 +19,6 @@
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.17",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^20.5.1",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.47.0",

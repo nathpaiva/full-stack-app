@@ -1,3 +1,8 @@
+interface ICanonicalController {
+  get: (req: Request, res: Response) => void
+  post: (req: Request, res: Response) => void
+}
+
 interface ICanonical {
   url: string
   spam_score?: number

@@ -8,7 +8,7 @@ const app = express()
 
 app.use(json())
 
-app.use(canonicalRouter)
+app.use('/api', canonicalRouter)
 
 mongoConnect()
 

@@ -12,7 +12,15 @@
     "node": ">=18.17.0"
   },
   "scripts": {
-    "start": "concurrently 'yarn workspace @full-stack/client start' 'yarn workspace @full-stack/server start'"
+    "start": "concurrently 'yarn start:ui' 'yarn start:api'",
+    "start:ui": "yarn workspace @full-stack/client start",
+    "start:api": "yarn workspace @full-stack/server start",
+    "lint": "concurrently 'yarn lint:api' 'yarn lint:ui'",
+    "lint:ui": "yarn workspace @full-stack/client lint",
+    "lint:api": "yarn workspace @full-stack/server lint",
+    "format": "concurrently 'yarn format:api' 'yarn format:ui'",
+    "format:ui": "yarn workspace @full-stack/client format",
+    "format:api": "yarn workspace @full-stack/server format"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
