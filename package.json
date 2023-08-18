@@ -10,5 +10,11 @@
   "license": "ISC",
   "engines": {
     "node": ">=18.17.0"
+  },
+  "scripts": {
+    "start": "concurrently 'yarn workspace @full-stack/client start' 'yarn workspace @full-stack/server start'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
   }
 }
