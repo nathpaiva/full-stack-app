@@ -2,13 +2,13 @@ import { json } from 'body-parser'
 import express from 'express'
 
 import mongoConnect from './models'
-import { userRouter } from './routes'
+import { canonicalRouter } from './routes'
 
 const app = express()
 
 app.use(json())
 
-app.use(userRouter)
+app.use(canonicalRouter)
 
 mongoConnect()
 
