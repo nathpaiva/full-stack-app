@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, type UserConfig } from 'vite'
-import checker from 'vite-plugin-checker'
 import svgrPlugin from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import type { InlineConfig } from 'vitest'
@@ -32,18 +31,7 @@ export default defineConfig({
       cleanOnRerun: false,
     },
   },
-  plugins: [
-    react(),
-    checker({
-      overlay: { initialIsOpen: false },
-      typescript: true,
-      eslint: {
-        lintCommand: 'eslint src --ext .ts,.tsx',
-      },
-    }),
-    viteTsconfigPaths(),
-    svgrPlugin(),
-  ],
+  plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   server: {
     port: 2000,
   },

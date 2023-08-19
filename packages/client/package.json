@@ -15,7 +15,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@nathpaiva/eslint-config-react": "^1.0.13",
+    "@nathpaiva/eslint-config-react": "^1.0.14",
     "@nathpaiva/prettier-config": "^1.0.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -33,7 +33,6 @@
     "prettier": "^3.0.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
-    "vite-plugin-checker": "^0.6.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.34.2"
