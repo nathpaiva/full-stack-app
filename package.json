@@ -20,7 +20,9 @@
     "lint:api": "yarn workspace @full-stack/server lint",
     "format": "concurrently 'yarn format:api' 'yarn format:ui'",
     "format:ui": "yarn workspace @full-stack/client format",
-    "format:api": "yarn workspace @full-stack/server format"
+    "format:api": "yarn workspace @full-stack/server format",
+    "build": "yarn build:ui",
+    "build:ui": "yarn workspace @full-stack/client build"
   },
   "devDependencies": {
     "concurrently": "^8.2.0"
