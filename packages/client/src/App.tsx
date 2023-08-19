@@ -1,12 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useEffect, useState } from 'react'
 import './App.css'
 
 export function App() {
-  const [headerSize, setHeaderSize] = useState<number | null>(null)
+  const [columns, setColumns] = useState<number | null>(null)
   const [csvParsedDocument, setCsvParsedDocument] = useState<string[] | null>(
     null,
   )
+  const tableTitle = csvParsedDocument?.length
+    ? `Your table has ${columns} columns`
+    : ` ${
+        columns
+          ? `Your data will have: ${columns} columns`
+          : 'Please add how many columns your files has'
+      }`
 
   useEffect(() => {
     if (!csvParsedDocument) return
@@ -24,20 +30,75 @@ export function App() {
       const result = event.target?.result
 
       if (typeof result === 'string') {
-        const data = result?.split('\n').map((item) => item.split(','))
+        const data1 = result?.split('\n').map((row, index) => {
+          if (!index) {
+            return row.split(',')
+          }
 
-        setCsvParsedDocument(data.flat())
-      }
-    })
+          // set if the row is an array
+          let rowIsArray = false
+          // set the position of this row during the normalization
+          let position: number | null = null
+          // create the new row normalized
+          const rowNormalized: string[] = []
 
-    fileReaderInstance.addEventListener('progress', (event) => {
-      if (event.loaded && event.total) {
-        const percentage = (event.loaded / event.total) * 100
+          // we can void this by creating an regex to use in the `.split()` 🥲
+          row.split(',').forEach((_item) => {
+            // check if starts a new array
+            const starts = _item.startsWith('"')
+            // check if the end of the array
+            const ends = _item.endsWith('"')
 
-        console.log(
-          '🚀 ~ file: App.tsx:37 ~ readFile.addEventListener ~ percentage:',
-          percentage,
-        )
+            // if is not an array only add the value to the new rowNormalized
+            if (!starts && !ends && !rowIsArray) {
+              rowNormalized.push(_item)
+            }
+
+            /**
+             * if is starting a new array
+             * set rowIsArray to true
+             * injects the new value to the rowNormalized
+             * set the position of this new item in the rowNormalized
+             */
+            if (starts) {
+              rowIsArray = true
+              rowNormalized.push(_item)
+              position = rowNormalized.length - 1
+            }
+
+            /**
+             * if the rowIsArray and is not the start ot end
+             * concat the content in the rowNormalized in the correct position
+             */
+            if (
+              rowIsArray &&
+              !ends &&
+              !starts &&
+              typeof position === 'number'
+            ) {
+              rowNormalized[position] = `${rowNormalized[position]},${_item}`
+            }
+
+            /**
+             * if is the ends of the array
+             * concat the content in the rowNormalized in the correct position
+             * and reset the rowIsArray
+             * and reset the position to null
+             */
+            if (ends && typeof position === 'number') {
+              rowIsArray = false
+              rowNormalized[position] = `${rowNormalized[position]},${_item}`
+
+              position = null
+            }
+          })
+
+          return rowNormalized
+        })
+
+        const data = data1.flat()
+
+        setCsvParsedDocument(data)
       }
     })
 
@@ -49,7 +110,7 @@ export function App() {
   ) => {
     const quantity = Number(event.target.value)
 
-    setHeaderSize(quantity)
+    setColumns(quantity)
   }
 
   return (
@@ -57,45 +118,48 @@ export function App() {
       <h1>Hello "User", welcome</h1>
 
       <h3>Add your csv file:</h3>
-      <fieldset>
+
+      <fieldset className="fieldset-group">
         <input
           type="number"
           onChange={handleHeaderSizerOnChange}
-          defaultValue={headerSize ? headerSize : undefined}
-          placeholder="Please type how many titles your file has"
+          defaultValue={columns ? columns : undefined}
+          placeholder="Set how many columns your table has"
         />
-      </fieldset>
-      <fieldset>
+
         <input
           type="file"
           accept=".csv"
           onChange={handleOnChangeCsv}
-          disabled={!headerSize}
+          disabled={!columns}
         />
       </fieldset>
 
       {/* Create table for the user data */}
-      <h4>Your data will have {headerSize} titles</h4>
-      <div
+      <h4>{tableTitle}</h4>
+      <ul
         className="grid-table"
         style={{
-          gridTemplate: `max-content / repeat(${headerSize}, 150px)`,
+          gridTemplate: `max-content / repeat(${columns}, 1fr)`,
         }}
+        role="table"
+        aria-label={tableTitle}
       >
-        {headerSize &&
+        {columns &&
           csvParsedDocument?.map((item, index) => {
-            const isTitle = index + 1 <= headerSize
+            const isTitle = index + 1 <= columns
             const text = isTitle ? item.replaceAll('_', ' ') : item
             return (
-              <div
+              <li
                 className={`grid-content ${isTitle ? 'title' : 'item'}`}
                 key={`${item}-${index}`}
+                role="row"
               >
                 {text}
-              </div>
+              </li>
             )
           })}
-      </div>
+      </ul>
     </>
   )
 }

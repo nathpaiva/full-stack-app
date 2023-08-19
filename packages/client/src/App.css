@@ -1,7 +1,8 @@
 #root {
-  /* max-width: 1280px; */
+  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 }
 
 .logo {
@@ -44,16 +45,34 @@
 
 .grid-table {
   display: grid;
-  gap: 10px;
-
-  .title {
-    color: orange;
-    font-weight: bold;
-    text-align: center;
-  }
+  row-gap: 10px;
+  border-radius: 2px;
 
   .grid-content {
     word-break: break-all;
     text-transform: capitalize;
+    padding: 0 5px;
+
+    &.title {
+      --space: 10px;
+
+      background-color: #646cffaa;
+
+      font-weight: bold;
+      padding-top: var(--space);
+      padding-bottom: var(--space);
+
+      border-bottom: 5px solid #61dafbaa;
+      border-radius: 2px;
+    }
   }
+}
+
+.fieldset-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
