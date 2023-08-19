@@ -1,46 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '../../../../../../../../vite.svg'
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { useEffect, useState } from 'react'
 import './App.css'
 
-const TestComponent = ({ name }: { name: string }) => {
-  return <div>{name}</div>
-}
+export function App() {
+  const [headerSize, setHeaderSize] = useState<number | null>(null)
+  const [csvParsedDocument, setCsvParsedDocument] = useState<string[] | null>(
+    null,
+  )
 
-function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!csvParsedDocument) return
+
+    console.log('csvDocument =>', csvParsedDocument)
+  }, [csvParsedDocument])
+
+  const handleOnChangeCsv = (file: React.ChangeEvent<HTMLInputElement>) => {
+    if (!file.target.files?.length) return
+
+    const fileText = file.target.files[0]
+    const fileReaderInstance = new FileReader()
+
+    fileReaderInstance.addEventListener('load', (event) => {
+      const result = event.target?.result
+
+      if (typeof result === 'string') {
+        const data = result?.split('\n').map((item) => item.split(','))
+
+        setCsvParsedDocument(data.flat())
+      }
+    })
+
+    fileReaderInstance.addEventListener('progress', (event) => {
+      if (event.loaded && event.total) {
+        const percentage = (event.loaded / event.total) * 100
+
+        console.log(
+          '🚀 ~ file: App.tsx:37 ~ readFile.addEventListener ~ percentage:',
+          percentage,
+        )
+      }
+    })
+
+    fileReaderInstance.readAsText(fileText)
+  }
+
+  const handleHeaderSizerOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const quantity = Number(event.target.value)
+
+    setHeaderSize(quantity)
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          type="button"
-          onClick={() => {
-            setCount((_count) => _count + 1)
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <h1>Hello "User", welcome</h1>
 
-      <TestComponent name="1" />
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h3>Add your csv file:</h3>
+      <fieldset>
+        <input
+          type="number"
+          onChange={handleHeaderSizerOnChange}
+          defaultValue={headerSize ? headerSize : undefined}
+          placeholder="Please type how many titles your file has"
+        />
+      </fieldset>
+      <fieldset>
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleOnChangeCsv}
+          disabled={!headerSize}
+        />
+      </fieldset>
+
+      {/* Create table for the user data */}
+      <h4>Your data will have {headerSize} titles</h4>
+      <div
+        className="grid-table"
+        style={{
+          gridTemplate: `max-content / repeat(${headerSize}, 150px)`,
+        }}
+      >
+        {headerSize &&
+          csvParsedDocument?.map((item, index) => {
+            const isTitle = index + 1 <= headerSize
+            const text = isTitle ? item.replaceAll('_', ' ') : item
+            return (
+              <div
+                className={`grid-content ${isTitle ? 'title' : 'item'}`}
+                key={`${item}-${index}`}
+              >
+                {text}
+              </div>
+            )
+          })}
+      </div>
     </>
   )
 }
-
-export default App
