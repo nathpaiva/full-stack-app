@@ -119,21 +119,32 @@ export function App() {
 
       <h3>Add your csv file:</h3>
 
-      <fieldset className="fieldset-group">
-        <input
-          type="number"
-          onChange={handleHeaderSizerOnChange}
-          defaultValue={columns ? columns : undefined}
-          placeholder="Set how many columns your table has"
-        />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          console.log('submit csv', csvParsedDocument)
+        }}
+      >
+        <fieldset className="fieldset-group">
+          <input
+            type="number"
+            onChange={handleHeaderSizerOnChange}
+            defaultValue={columns ? columns : undefined}
+            placeholder="Set how many columns your table has"
+          />
 
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleOnChangeCsv}
-          disabled={!columns}
-        />
-      </fieldset>
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleOnChangeCsv}
+            disabled={!columns}
+          />
+        </fieldset>
+
+        <button type="submit" disabled={!csvParsedDocument?.length}>
+          Send CSV
+        </button>
+      </form>
 
       {/* Create table for the user data */}
       <h4>{tableTitle}</h4>
