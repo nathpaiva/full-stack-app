@@ -1,6 +1,7 @@
 interface ICanonicalController {
   get: (req: Request, res: Response) => void
   post: (req: Request, res: Response) => void
+  post_csv: (req: Request, res: Response) => void
 }
 
 interface ICanonical {
