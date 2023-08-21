@@ -20,7 +20,8 @@ export const useCsv = (): IUseCsv => {
       const result = event.target?.result
 
       if (typeof result === 'string') {
-        const data1 = result?.split('\n').map((row, index) => {
+        const data1 = result.split('\n').map((row, index) => {
+          // the first row is the headers
           if (!index) {
             return row.split(',')
           }
