@@ -32,11 +32,20 @@ export function App() {
   const handleSubmit = async () => {
     try {
       console.log(csvDocument)
-      const requestResult = await fetch('http://localhost:3000/api/canonical')
+      const requestResult = await fetch(
+        'http://localhost:3000/api/canonical/csv',
+        {
+          method: 'POST',
+          headers: {
+            ContentType: 'multipart/form-data',
+          },
+          body: csvDocument,
+        },
+      )
       const result = await requestResult.json()
       console.log('🚀 ~ file: App.tsx:36 ~ handleSubmit ~ result:', result)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
