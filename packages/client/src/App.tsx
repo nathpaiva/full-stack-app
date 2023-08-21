@@ -5,7 +5,7 @@ import { useCsv } from './hooks'
 
 export function App() {
   const [columns, setColumns] = useState<number | null>(null)
-  const { csvParsedDocument, handleOnChangeCsv } = useCsv()
+  const { csvParsedDocument, csvDocument, handleOnChangeCsv } = useCsv()
 
   const tableTitle = csvParsedDocument?.length
     ? `Your table has ${columns} columns`
@@ -16,10 +16,10 @@ export function App() {
       }`
 
   useEffect(() => {
-    if (!csvParsedDocument) return
+    if (!csvDocument) return
 
-    console.log('csvDocument =>', csvParsedDocument)
-  }, [csvParsedDocument])
+    console.log('csvDocument =>', csvDocument)
+  }, [csvDocument])
 
   const handleHeaderSizerOnChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -27,6 +27,17 @@ export function App() {
     const quantity = Number(event.target.value)
 
     setColumns(quantity)
+  }
+
+  const handleSubmit = async () => {
+    try {
+      console.log(csvDocument)
+      const requestResult = await fetch('http://localhost:3000/api/canonical')
+      const result = await requestResult.json()
+      console.log('🚀 ~ file: App.tsx:36 ~ handleSubmit ~ result:', result)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -38,7 +49,8 @@ export function App() {
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          console.log('submit csv', csvParsedDocument)
+          console.log('submit csv', csvDocument)
+          handleSubmit()
         }}
       >
         <fieldset className="fieldset-group">

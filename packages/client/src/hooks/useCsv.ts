@@ -2,25 +2,35 @@ import { useState } from 'react'
 
 interface IUseCsv {
   csvParsedDocument: string[] | null
+  csvDocument: FormData | null
   handleOnChangeCsv: (file: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const useCsv = (): IUseCsv => {
-  const [csvParsedDocument, setCsvParsedDocument] = useState<string[] | null>(
-    null,
-  )
+  const [csvDocument, setCsvDocument] = useState<{
+    parsed: IUseCsv['csvParsedDocument']
+    file: IUseCsv['csvDocument']
+  }>({
+    parsed: null,
+    file: null,
+  })
 
   const handleOnChangeCsv = (file: React.ChangeEvent<HTMLInputElement>) => {
     if (!file.target.files?.length) return
 
-    const fileText = file.target.files[0]
+    const _file = file.target.files[0]
+    const fileName = _file.name
+
     const fileReaderInstance = new FileReader()
+    const formData = new FormData()
+    formData.append('name', fileName)
+    formData.append('file', _file)
 
     fileReaderInstance.addEventListener('load', (event) => {
       const result = event.target?.result
 
       if (typeof result === 'string') {
-        const data1 = result.split('\n').map((row, index) => {
+        const formatData = result.split('\n').map((row, index) => {
           // the first row is the headers
           if (!index) {
             return row.split(',')
@@ -87,17 +97,21 @@ export const useCsv = (): IUseCsv => {
           return rowNormalized
         })
 
-        const data = data1.flat()
+        const data = formatData.flat()
 
-        setCsvParsedDocument(data)
+        setCsvDocument(() => ({
+          parsed: data,
+          file: formData,
+        }))
       }
     })
 
-    fileReaderInstance.readAsText(fileText)
+    fileReaderInstance.readAsText(_file)
   }
 
   return {
-    csvParsedDocument,
+    csvParsedDocument: csvDocument.parsed,
+    csvDocument: csvDocument.file,
     handleOnChangeCsv,
   }
 }
