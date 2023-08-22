@@ -45,4 +45,17 @@ export const canonical: ICanonicalController = {
       return errorResolver(req, res, error as Error)
     }
   },
+  post_csv: async (req, res) => {
+    try {
+      const { name } = req.body
+      const { file } = req.files
+      console.log('=>', { file, name })
+
+      res.json({
+        success: true,
+      })
+    } catch (error) {
+      return errorResolver(req, res, error as Error)
+    }
+  },
 }
