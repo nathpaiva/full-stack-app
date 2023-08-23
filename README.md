@@ -2,9 +2,9 @@
 
 # About this app
 
-This is a SPA and API application in which the user can add import a `CSV` data in the Front-end, and the SPA will render the data parsed.
+This is an SPA and API application in which the user can import a `CSV` file in the Front-end, and the SPA will render the data parsed.
 
-The `CSV` should have this format, which the first line is the header, and the following lines are each row. Some columns can have more then one value inside.
+The `CSV` should have this format, in which the first line is the header, and the following lines are each row. Some columns can have more than one value inside.
 
 ```csv
 url,spam_score,matchin_target_indexs,matching_soucer_urls,domain_authority
@@ -26,21 +26,21 @@ globo2.com,4,,"globo.com, 13",4
 
 - [Jest](https://jestjs.io/)
 
-## To run the project you need to install:
+## To run the project, you need to install the following:
 
 - [Node](https://nodejs.org/en/download/)
 - [Yarn](https://yarnpkg.com/lang/en/docs/install/) or NPM (already installed with the node)
 - [Mongodb](https://docs.mongodb.com/manual/installation/)
 
-## To start it is necessary to rotate the mongo locally:
+## To start, it is necessary to rotate the Mongo locally:
 
 - [mongod](https://docs.mongodb.com/manual/tutorial/manage-mongodb-processes/)
 
-## Before starting the project you must install the dependencies:
+## Before starting the project, you must install the dependencies:
 
 - `yarn`
 
-## To start the project you have to run the commands:
+## To start the project, you have to run the commands:
 
 `yarn start`
 
@@ -48,8 +48,8 @@ globo2.com,4,,"globo.com, 13",4
 
   - [http://localhost:3000](http://localhost:3000)
 
-- And the front-end on: [http://localhost:3000](http://localhost:2000)
+  - And the front-end on: [http://localhost:3000](http://localhost:2000)
 
 ## Say hello 👋
 
-Since I'm aiming to learn more about `back-end`, any tips or suggestions are welcome. I would love to hear from you, feel free to open [an issue](https://github.com/nathpaiva/caffeine-api/issues) or also a [pull request](https://github.com/nathpaiva/caffeine-api/fork).
+Since I aim to learn more about `back-end`, any tips or suggestions are welcome. I would love to hear from you. Feel free to open [an issue](https://github.com/nathpaiva/full-stack-app/issues) or also a [pull request](https://github.com/nathpaiva/full-stack-app/fork).
